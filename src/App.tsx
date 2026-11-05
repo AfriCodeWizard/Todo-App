@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Nido App</h1>
+      <h1>Nido App?</h1>
 
       <div className= "input-row">
         <input
