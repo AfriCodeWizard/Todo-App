@@ -25,6 +25,15 @@ function App() {
     setInput('')
   }
 
+  const  toggleTodo = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed} : todo
+     )
+        
+    )
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       addTodo()
@@ -48,8 +57,16 @@ function App() {
 
       <ul className="todo-list">
         {todos.map((todo) => (
-          <li key={todo.id} className={todo.completed ? 'completed' : ''}>
-            {todo.text}
+          <li 
+            key={todo.id} 
+            className={todo.completed ? 'completed' : ''}
+            onClick={() => toggleTodo(todo.id)}
+            >
+
+              <span className="checkbox">
+                {todo.completed ? '✔' : ''}
+              </span>  
+              {todo.text}
           </li>
         ))}
       </ul>
