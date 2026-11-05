@@ -1,4 +1,4 @@
-```
+
 import { useState } from 'react'
 import type { Todo } from './types'
 import './App.css'
@@ -15,7 +15,10 @@ function App() {
 
       <ul className="todo-list">
         {todos.map((todo) => (
-          <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+          <li
+            key={todo.id}
+            className={`todo-item ${todo.completed ? 'completed' : ''}`}
+          >
             {todo.text}
           </li>
         ))}
@@ -25,4 +28,3 @@ function App() {
 }
 
 export default App
-```
