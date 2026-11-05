@@ -3,13 +3,15 @@ import { useState } from 'react'
 import type { Todo } from './types'
 import './App.css'
 
+type Filter = 'all' | 'active' | 'completed'
+
 function App() {
   const [todos, setTodos] = useState<Todo[]>([
     { id: 1, text: 'Learn TypeScript', completed: false },
     { id: 2, text: 'Build a Todo App', completed: false },
   ])
-
   const [input, setInput] = useState('')
+  const [filter, setFilter] = useState<Filter>('all')
 
   const addTodo = () => {
     const text = input.trim()
@@ -38,51 +40,83 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
       addTodo()
     }
   }
 
-  return (
-    <div className="app">
-      <h1>Nido App?</h1>
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed
+    if (filter === 'completed') return todo.completed
+    return true
+  })
 
-      <div className= "input-row">
+  return (
+    // CHANGE: All JSX elements are wrapped in ONE parent div.
+    // This fixes: "JSX expressions must have one parent element."
+    <div className="app">
+      <h1>Nido App</h1>
+
+      <div className="input-container">
         <input
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="What needs to be done?"        
+          placeholder="Add a new task..."
         />
+
         <button onClick={addTodo}>Add</button>
       </div>
 
+      <div className="filter-buttons">
+        {/* CHANGE: JSX uses className, not class. */}
+        <button
+          className={filter === 'all' ? 'active' : ''}
+          onClick={() => setFilter('all')}
+        >
+          All
+        </button>
+
+        <button
+          className={filter === 'active' ? 'active' : ''}
+          onClick={() => setFilter('active')}
+        >
+          Active
+        </button>
+
+        <button
+          className={filter === 'completed' ? 'active' : ''}
+          onClick={() => setFilter('completed')}
+        >
+          Completed
+        </button>
+      </div>
+
       <ul className="todo-list">
-        {todos.map((todo) => (
-          <li 
-            key={todo.id} 
+        {filteredTodos.map((todo) => (
+          // CHANGE: Each mapped item has a unique key.
+          <li
+            key={todo.id}
             className={todo.completed ? 'completed' : ''}
-            >
+          >
+            <span onClick={() => toggleTodo(todo.id)}>
+              {todo.text}
+            </span>
 
-              <div className="todo-content" onClick={() => toggleTodo(todo.id)}>
-                <span className="checkbox">
-                  {todo.completed ? '✔' : ''}
-                </span>
-                <span className="todo-text">{todo.text}</span>
-              </div>
-
-              <button
-                className="delete-btn"
-                onClick={() => deleteTodo(todo.id)}
-                aria-label="Delete todo">
-                  x
-                </button>              
+            <button onClick={() => deleteTodo(todo.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
-      </div>
+
+      {/* CHANGE: Empty-state message is inside the same parent div. */}
+      {filteredTodos.length === 0 && (
+        <p className="empty-message">No tasks to display.</p>
+      )}
+    </div>
   )
 }
 

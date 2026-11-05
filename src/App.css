@@ -105,3 +105,37 @@ h1 {
     color: #ef4444;
     background: #fef2f2;
 }
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    justify-content: center;
+}
+
+.filters button {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #e2e8f0;
+    background: whote;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.filters button:hover {
+    border-color: #94a3b8;
+}
+
+.filters button.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+} 
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
