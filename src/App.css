@@ -28,3 +28,17 @@ h1 {
     text-decoration: line-through;
     color: #888;
 }
+
+.input-row button {
+    padding: 0.6rem 1.2rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.input-row button:hover {
+    background: #1d4ed8;
+}

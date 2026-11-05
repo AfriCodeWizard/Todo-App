@@ -9,21 +9,51 @@ function App() {
     { id: 2, text: 'Build a Todo App', completed: false },
   ])
 
+  const [input, setInput] = useState('')
+
+  const addTodo = () => {
+    const text = input.trim()
+    if (!text) return
+
+    const newTodo: Todo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    }
+
+    setTodos([...todos, newTodo])
+    setInput('')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      addTodo()
+    }
+  }
+
   return (
     <div className="app">
-      <h1>Todo App</h1>
+      <h1>Nido App</h1>
+
+      <div className= "input-row">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="What needs to be done?"        
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
 
       <ul className="todo-list">
         {todos.map((todo) => (
-          <li
-            key={todo.id}
-            className={`todo-item ${todo.completed ? 'completed' : ''}`}
-          >
+          <li key={todo.id} className={todo.completed ? 'completed' : ''}>
             {todo.text}
           </li>
         ))}
       </ul>
-    </div>
+      </div>
   )
 }
 
