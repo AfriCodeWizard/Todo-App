@@ -10,6 +10,7 @@ function App() {
     { id: 1, text: 'Learn TypeScript', completed: false },
     { id: 2, text: 'Build a Todo App', completed: false },
   ])
+
   const [input, setInput] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
 
@@ -27,12 +28,13 @@ function App() {
     setInput('')
   }
 
-  const  toggleTodo = (id: number) => {
+  const toggleTodo = (id: number) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed} : todo
-     )
-        
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
     )
   }
 
@@ -53,12 +55,11 @@ function App() {
   })
 
   return (
-    // CHANGE: All JSX elements are wrapped in ONE parent div.
-    // This fixes: "JSX expressions must have one parent element."
     <div className="app">
-      <h1>Nido App</h1>
+      <h1>Nido App?</h1>
 
-      <div className="input-container">
+      {/* CHANGE: Matched input-row to the existing CSS selector. */}
+      <div className="input-row">
         <input
           type="text"
           value={input}
@@ -70,8 +71,8 @@ function App() {
         <button onClick={addTodo}>Add</button>
       </div>
 
-      <div className="filter-buttons">
-        {/* CHANGE: JSX uses className, not class. */}
+      {/* CHANGE: Matched filters to the existing CSS selector. */}
+      <div className="filters">
         <button
           className={filter === 'all' ? 'active' : ''}
           onClick={() => setFilter('all')}
@@ -96,25 +97,38 @@ function App() {
 
       <ul className="todo-list">
         {filteredTodos.map((todo) => (
-          // CHANGE: Each mapped item has a unique key.
           <li
             key={todo.id}
             className={todo.completed ? 'completed' : ''}
           >
-            <span onClick={() => toggleTodo(todo.id)}>
-              {todo.text}
+            {/* CHANGE: Added existing CSS classes to the task content. */}
+            <span
+              className="todo-content"
+              onClick={() => toggleTodo(todo.id)}
+            >
+              <span className="checkbox">
+                {todo.completed ? '✓' : ''}
+              </span>
+
+              <span className="todo-text">
+                {todo.text}
+              </span>
             </span>
 
-            <button onClick={() => deleteTodo(todo.id)}>
+            {/* CHANGE: Added delete-btn to activate its CSS styling. */}
+            <button
+              className="delete-btn"
+              onClick={() => deleteTodo(todo.id)}
+            >
               Delete
             </button>
           </li>
         ))}
       </ul>
 
-      {/* CHANGE: Empty-state message is inside the same parent div. */}
+      {/* CHANGE: Matched empty to the existing CSS selector. */}
       {filteredTodos.length === 0 && (
-        <p className="empty-message">No tasks to display.</p>
+        <p className="empty">No tasks to display.</p>
       )}
     </div>
   )
