@@ -34,6 +34,10 @@ function App() {
     )
   }
 
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       addTodo()
@@ -60,13 +64,21 @@ function App() {
           <li 
             key={todo.id} 
             className={todo.completed ? 'completed' : ''}
-            onClick={() => toggleTodo(todo.id)}
             >
 
-              <span className="checkbox">
-                {todo.completed ? '✔' : ''}
-              </span>  
-              {todo.text}
+              <div className="todo-content" onClick={() => toggleTodo(todo.id)}>
+                <span className="checkbox">
+                  {todo.completed ? '✔' : ''}
+                </span>
+                <span className="todo-text">{todo.text}</span>
+              </div>
+
+              <button
+                className="delete-btn"
+                onClick={() => deleteTodo(todo.id)}
+                aria-label="Delete todo">
+                  x
+                </button>              
           </li>
         ))}
       </ul>
