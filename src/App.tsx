@@ -86,6 +86,13 @@ function App() {
   const activeCount = todos.filter((todo) => !todo.completed).length
   const hasCompleted = todos.some((todo) => todo.completed)
 
+  const getEmptyMessage = () => {
+    if (todos.length === 0) return 'no todos yet. Add one above!'
+    if (filter === 'active') return 'no active todos 🎉'
+    if (filter === 'completed') return 'No completed todos yet'
+    return 'No todos to show'
+  }
+
   return (
     <div className="app">
       <h1>Nido App?</h1>
@@ -97,33 +104,36 @@ function App() {
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a new task..."
+          autoFocus
         />
 
         <button onClick={addTodo}>Add</button>
       </div>
 
-      <div className="filters">
-        <button
-          className={filter === 'all' ? 'active' : ''}
-          onClick={() => setFilter('all')}
-        >
-          All
-        </button>
+      {todos.length > 0 && (
+        <div className="filters">
+          <button
+            className={filter === 'all' ? 'active' : ''}
+            onClick={() => setFilter('all')}
+          >
+            All
+          </button>
 
-        <button
-          className={filter === 'active' ? 'active' : ''}
-          onClick={() => setFilter('active')}
-        >
-          Active
-        </button>
+          <button
+            className={filter === 'active' ? 'active' : ''}
+            onClick={() => setFilter('active')}
+          >
+            Active
+          </button>
 
-        <button
-          className={filter === 'completed' ? 'active' : ''}
-          onClick={() => setFilter('completed')}
-        >
-          Completed
-        </button>
-      </div>
+          <button
+            className={filter === 'completed' ? 'active' : ''}
+            onClick={() => setFilter('completed')}
+          >
+            Completed
+          </button>
+        </div>
+      )}
 
       <ul className="todo-list">
         {filteredTodos.map((todo) => (
@@ -155,7 +165,7 @@ function App() {
       </ul>
 
       {filteredTodos.length === 0 && (
-        <p className="empty">No tasks to display.</p>
+        <p className="empty">{getEmptyMessage()}</p>
       )}
 
       {todos.length > 0 && (
