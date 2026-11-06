@@ -1,15 +1,39 @@
 
-import { useState } from 'react'
+import { useEffect, useState, type KeyboardEvent } from 'react'
 import type { Todo } from './types'
 import './App.css'
 
 type Filter = 'all' | 'active' | 'completed'
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: 'Learn TypeScript', completed: false },
-    { id: 2, text: 'Build a Todo App', completed: false },
-  ])
+
+  // CHANGE 1: Load previously saved todos when the app starts.
+  // If nothing is saved, use the two default todos.
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    try {
+      const savedTodos = localStorage.getItem('todos')
+
+      if (savedTodos) {
+        const parsedTodos: unknown = JSON.parse(savedTodos)
+
+        if (Array.isArray(parsedTodos)) {
+          return parsedTodos as Todo[]
+        }
+      }
+    } catch (error) {
+      console.error('Could not load todos from localStorage:', error)
+    }
+
+    return [
+      { id: 1, text: 'Learn TypeScript', completed: false },
+      { id: 2, text: 'Build a Todo App', completed: false },
+    ]
+  })
+
+  // CHANGE 2: Save todos whenever the todos state changes.
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const [input, setInput] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
@@ -42,7 +66,8 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  // CHANGE 3: Imported KeyboardEvent as a type from React.
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       addTodo()
     }
@@ -58,7 +83,6 @@ function App() {
     <div className="app">
       <h1>Nido App?</h1>
 
-      {/* CHANGE: Matched input-row to the existing CSS selector. */}
       <div className="input-row">
         <input
           type="text"
@@ -71,7 +95,6 @@ function App() {
         <button onClick={addTodo}>Add</button>
       </div>
 
-      {/* CHANGE: Matched filters to the existing CSS selector. */}
       <div className="filters">
         <button
           className={filter === 'all' ? 'active' : ''}
@@ -101,7 +124,6 @@ function App() {
             key={todo.id}
             className={todo.completed ? 'completed' : ''}
           >
-            {/* CHANGE: Added existing CSS classes to the task content. */}
             <span
               className="todo-content"
               onClick={() => toggleTodo(todo.id)}
@@ -115,7 +137,6 @@ function App() {
               </span>
             </span>
 
-            {/* CHANGE: Added delete-btn to activate its CSS styling. */}
             <button
               className="delete-btn"
               onClick={() => deleteTodo(todo.id)}
@@ -126,7 +147,6 @@ function App() {
         ))}
       </ul>
 
-      {/* CHANGE: Matched empty to the existing CSS selector. */}
       {filteredTodos.length === 0 && (
         <p className="empty">No tasks to display.</p>
       )}
