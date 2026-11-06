@@ -66,6 +66,10 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
+  const clearCompleted = () => {
+    setTodos(todos.filter((todo) => !todo.completed))
+  }
+
   // CHANGE 3: Imported KeyboardEvent as a type from React.
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -78,6 +82,9 @@ function App() {
     if (filter === 'completed') return todo.completed
     return true
   })
+
+  const activeCount = todos.filter((todo) => !todo.completed).length
+  const hasCompleted = todos.some((todo) => todo.completed)
 
   return (
     <div className="app">
@@ -149,6 +156,20 @@ function App() {
 
       {filteredTodos.length === 0 && (
         <p className="empty">No tasks to display.</p>
+      )}
+
+      {todos.length > 0 && (
+        <div className="footer">
+          <span>
+            {activeCount} item{activeCount !== 1 ? 's' : ''} left
+          </span>
+
+          {hasCompleted && (
+            <button className="clear-btn" onClick={clearCompleted}>
+              Clear completed
+            </button>
+          )}
+       </div>
       )}
     </div>
   )

@@ -139,3 +139,29 @@ h1 {
     margin-top: 1.5rem;
     font-size: 0.95rem;
 }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.clear-btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0,25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.clear-btn:hover {
+    color: #ef4444;
+    background: #fef2f2;
+}
